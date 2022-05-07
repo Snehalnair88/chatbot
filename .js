@@ -1,128 +1,39 @@
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelector("#input").addEventListener("keydown", function(e) {
-    if (e.code === "Enter") {
-        console.log("You pressed the enter button!")
+var questionNum = 0;													// keep count of question, used for IF condition.
+var question = '<h1>what is your name?</h1>';				  // first question
+
+var output = document.getElementById('output');				// store id="output" in output variable
+output.innerHTML = question;													// ouput first question
+
+function bot() { 
+    var input = document.getElementById("input").value;
+    console.log(input);
+
+    if (questionNum == 0) {
+    output.innerHTML = '<h1>hello ' + input + '</h1>';// output response
+    document.getElementById("input").value = "";   		// clear text box
+    question = '<h1>how old are you?</h1>';			    	// load next question		
+    setTimeout(timedQuestion, 2000);									// output next question after 2sec delay
     }
-  });
-});
 
-
-function output()
-{
-        let text = input.toLowerCase().replace(/[^\w\s\d]/gi, "");
-        …
+    else if (questionNum == 1) {
+    output.innerHTML = '<h1>That means you were born in ' + (2016 - input) + '</h1>';
+    document.getElementById("input").value = "";   
+    question = '<h1>where are you from?</h1>';					      	
+    setTimeout(timedQuestion, 2000);
+    }   
 }
 
-function output()
-{
-      let text = input.toLowerCase().replace(/[^\w\s\d]/gi, "");
-        …     
-     
-     text = text
-    .replace(/ a /g, " ")
-    .replace(/whats/g, "what is")
-    .replace(/please /g, "")
-    .replace(/ please/g, "");
+function timedQuestion() {
+    output.innerHTML = question;
 }
 
-const utterances = [ 
-  ["how are you", "how is life", "how are things"],        //0
-  ["hi", "hey", "hello", "good morning", "good afternoon"],      //1
-  ["what are you doing", "what is going on", "what is up"],      //2
-  ["how old are you"],					//3
-  ["who are you", "are you human", "are you bot", "are you human or bot"],   //4
-  
-   …
- 
-;
- 
-// Possible responses corresponding to triggers
- 
-const answers = [
-   [
-    "Fine... how are you?",
-    "Pretty well, how are you?",
-    "Fantastic, how are you?"
-  ],                                                                                  	//0
-  [
-    "Hello!", "Hi!", "Hey!", "Hi there!", "Howdy"
-  ],						//1
-  [
-    "Nothing much",
-    "About to go to sleep",
-    "Can you guess?",
-    "I don't know actually"
-  ],						//2
-  ["I am infinite"],					//3
-  ["I am just a bot", "I am a bot. What are you?"],	//4
-  
-  …
- 
-];
- 
-// For any other user input
- 
-const alternatives = [
-  "Go on...",
-  "Try again",
-];
-
-function compare(utterancesArray, answersArray, string) {
-  let item;
-  for (let x = 0; x < utterancesArray.length; x++) {
-    for (let y = 0; y < utterancesArray[x].length; y++) {
-      if (utterancesArray[x][y] === string) {
-        items = answersArray[x];
-        item = items[Math.floor(Math.random() * items.length)];
-        }
-      }
-   }
-  return item;
-}
-
-function output(input) {
-  let product;
-  let text = input.toLowerCase().replace(/[^\w\s\d]/gi, "");
-  text = text
-    .replace(/ a /g, " ")
-    .replace(/whats/g, "what is")
-    .replace(/please /g, "")
-    .replace(/ please/g, "");
- 
-  if (compare(utterances, answers, text)) {
-    product = compare(utterances, answers, text);
-  } 
-  else {
-    product = alternatives[Math.floor(Math.random() * alternatives.length)];
+//push enter key (using jquery), to run bot function.
+$(document).keypress(function(e) {
+  if (e.which == 13) {
+    bot();																						// run bot function when enter key pressed
+    questionNum++;																		// increase questionNum count by 1
   }
- 
-  //update  DOM
-  addChatEntry (input, product);
-}
-
-
-function addChatEntry(input, product) {
-  const messagesContainer = document.getElementById("messages");
-  
-  let userDiv = document.createElement("div");
-  userDiv.id = "user";
-  userDiv.className = "user response";
-  userDiv.innerHTML = `${input}`;
-  messagesContainer.appendChild(userDiv);
- 
-  let botDiv = document.createElement("div");
-  let botText = document.createElement("span");
-  botDiv.id = "bot";
-  botDiv.className = "bot response";
-  botText.innerText = "Typing...";
-  botDiv.appendChild(botText);
-  messagesContainer.appendChild(botDiv);
- 
-                                  …
- 
-  setTimeout(() => {
-    botText.innerText = `${product}`;
-  }, 2000); }
+});
 
 
 
